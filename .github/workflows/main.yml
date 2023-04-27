@@ -30,7 +30,7 @@ jobs:
 
       - name: Publish Asset to Exchange
         env:
-          ANYPOINT_TOKEN: ${{ token }}
+          ANYPOINT_TOKEN: ${{ secrets.ANYPOINT_TOKEN }}
         run: |
           curl -X POST -H "Authorization: Bearer ${ANYPOINT_TOKEN}" \
             -F "file=@cicddemo.raml \
