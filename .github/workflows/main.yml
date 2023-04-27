@@ -30,7 +30,7 @@ jobs:
 
       - name: Publish Asset to Exchange
         env:
-          ANYPOINT_TOKEN: ${{ secrets.ANYPOINT_TOKEN }}
+          ANYPOINT_TOKEN: ${{ token }}
         run: |
           curl -X POST -H "Authorization: Bearer ${ANYPOINT_TOKEN}" \
             -F "file=@path/to/asset" \
