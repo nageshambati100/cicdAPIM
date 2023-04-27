@@ -33,7 +33,7 @@ jobs:
           ANYPOINT_TOKEN: ${{ token }}
         run: |
           curl -X POST -H "Authorization: Bearer ${ANYPOINT_TOKEN}" \
-            -F "file=@calculator.yaml" \
+            -F "file=@cicddemo.raml \
             https://anypoint.mulesoft.com/exchange/api/v2/assets/publish
           echo "Asset published to Exchange successfully"
 
