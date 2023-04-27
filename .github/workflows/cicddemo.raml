@@ -1,0 +1,20 @@
+#%RAML 1.0
+title: cicdDemo
+baseUri: http://cicddemo.com
+mediaType:
+  - application/json
+version: 1.0.0
+protocols:
+  - HTTP
+/cicd:
+  get:
+    queryParameters:
+      operation:
+        example: Example
+        type: string
+    responses:
+      "200":
+        description: |-
+          {
+          "Answer": 100
+          }
