@@ -36,8 +36,8 @@ jobs:
           ANYPOINT_TOKEN: ${{ secrets.ANYPOINT_TOKEN }}
         run: |
           curl -X POST "https://anypoint.mulesoft.com/exchange/api/v2/assets" \
-            -H "X-ANYPNT-ORG-ID: ${ORG_ID}" \
-            -H "X-ANYPNT-ENV-ID: ${ENV_ID}" \
+            -H "X-ANYPNT-ORG-ID: ${{ secrets.ANYPOINT_ORGID }}" \
+            -H "X-ANYPNT-ENV-ID: ${{ secrets.ANYPOINT_ENVID }}" \
             -H "Authorization: Bearer ${TOKEN}" \
             -H "Content-Type: multipart/form-data" \
             -F "file=@./calculator.raml" \
