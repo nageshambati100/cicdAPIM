@@ -1,1 +1,21 @@
+#%RAML 1.0
+title: calculator
+baseUri: http://calculator.com
+mediaType:
+  - application/json
+version: 1.0.0
+protocols:
+  - HTTP
+/calculator:
+  get:
+    queryParameters:
+      operation:
+        example: Example
+        type: string
+    responses:
+      "200":
+        description: |-
+          {
+          "Answer": 100
+          }
 
