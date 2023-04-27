@@ -39,7 +39,7 @@ jobs:
             -H "X-ANYPNT-ENV-ID: ${ENV_ID}" \
             -H "Authorization: Bearer ${TOKEN}" \
             -H "Content-Type: multipart/form-data" \
-            -F "file=@cicddemo.raml" \
+            -F "file=@./calculator.raml" \
             -F "assetName=CICD RAML" \
             -F "assetVersion=1.0.0" \
             -F "assetType=raml" \
