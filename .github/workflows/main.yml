@@ -48,7 +48,7 @@ jobs:
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilaprilnew"' \
-             --form 'version="1.0.5"' \
+             --form 'version="1.0.6"' \
              --form 'name="my cicd demo app new"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
@@ -72,7 +72,7 @@ jobs:
           "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/myorg/apis" \
           -H "Authorization: Bearer ${{ secrets.ANYPOINT_TOKEN }}" \
           -H "Content-Type: application/json" \
-          | jq '.data[] | select(.name == "myapi") | .id')
+          | jq '.data['18659550'] | select(.name == "myapi") | .id')
           if [ -z "$api_id" ]; then
             echo "API ID does not exist in API Manager"
           else
