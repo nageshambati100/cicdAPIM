@@ -13,5 +13,8 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '11'
+      - name: Download Groovy JAR
+        run: wget https://repo1.maven.org/maven2/org/apache/groovy/groovy-all/3.0.9/groovy-all-3.0.9.jar
+
       - name: Execute Groovy Script
         run: java -jar groovy.jar api-manager-provision.groovy
