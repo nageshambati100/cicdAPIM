@@ -88,13 +88,11 @@ jobs:
            --header 'Authorization: Bearer c1b2025a-c96c-499d-85a1-f3f39fdab28d' \
            --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"ghacicd","version":"1.0.0"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":"githhubactionscicd}')
            api_id=$(echo "$response" | jq -r '.id')
-        id: create_api_id
            echo "::set-output name=response::$response"
            echo "API created in API Manager with ID ${api_id}"
            echo "$api_id" > api_id.txt
            
       - name: Commit API ID to repo
-         echo "Asset publishing status code ${{ steps.create_api_id.outputs.response }}"
         run: |
          git config --local user.email "nageshambati100@gmail.com"
          git config --local user.name "nageshambati100"
