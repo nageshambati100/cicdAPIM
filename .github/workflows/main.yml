@@ -38,7 +38,7 @@ jobs:
           curl -X POST "https://anypoint.mulesoft.com/exchange/api/v2/assets" \
             -H "X-ANYPNT-ORG-ID: ${{ secrets.ANYPOINT_ORG_ID }}" \
             -H "X-ANYPNT-ENV-ID: ${{ secrets.ANYPOINT_ORG_ID }}" \
-            -H "Authorization: Bearer ${TOKEN}" \
+            -H "Authorization: Bearer ${{ secrets.ANYPOINT_TOKEN }}" \
             -H "Content-Type: multipart/form-data" \
             -F "file=@./calculator.raml" \
             -F "assetName=CICD RAML" \
