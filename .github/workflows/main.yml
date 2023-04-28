@@ -28,7 +28,16 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{"username":"'${ANYPOINT_USERNAME}'","password":"'${ANYPOINT_PASSWORD}'"}')
           token=$(echo $response | jq -r '.access_token')
+        id: login
+        continue-on-error: true
           echo "Anypoint Platform login successful"
+          
+      - name: Check if login was successful
+        run: |
+          if [ -z "${{ steps.login.outputs }}" ]; then
+            echo "Error: Login failed"
+            exit 1
+          fi
 
       - name: Publish Asset to Exchange
         env:
