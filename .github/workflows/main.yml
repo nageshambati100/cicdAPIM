@@ -55,6 +55,7 @@ jobs:
              --form "asset=@./calculator.raml"
           echo "Asset published to Exchange successfully"
           echo "Asset published successfully with status code ${{ steps.publish_asset.outputs.status }}"
+          status=$(echo $response | jq -r '.status')
         id: publish_asset
         continue-on-error: true
         
