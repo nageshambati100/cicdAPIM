@@ -13,9 +13,5 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '11'
-      - name: Download Groovy JAR
-         run: wget https://dl.bintray.com/groovy/maven/apache-groovy-binary-3.0.9.zip && unzip apache-groovy-binary-3.0.9.zip
-
-
       - name: Execute Groovy Script
         run: java -jar groovy.jar api-manager-provision.groovy
