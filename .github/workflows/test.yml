@@ -15,4 +15,4 @@ jobs:
           java-version: '11'
 
       - name: Execute Groovy Script
-        run: java -jar groovy.jar myscript.groovy
+        run: java -jar groovy.jar api-manager-provision.groovy
