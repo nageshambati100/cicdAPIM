@@ -44,11 +44,11 @@ jobs:
           ANYPOINT_TOKEN: ${{ secrets.ANYPOINT_TOKEN }}
         run: |          
            status=$(curl -s -w "%{http_code}" -o /dev/null --location 'https://anypoint.mulesoft.com/exchange/api/v1/assets' \
-             --header 'Authorization: Bearer cae47a7f-d501-4016-a1aa-1f2385e033f7' \
+             --header 'Authorization: Bearer 5c811446-4b22-4dcb-bdf1-f173fda106f4' \
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilaprilnew"' \
-             --form 'version="1.0.6"' \
+             --form 'version="1.0.7"' \
              --form 'name="my cicd demo app new"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
