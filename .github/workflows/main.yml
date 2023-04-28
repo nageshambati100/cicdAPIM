@@ -33,20 +33,18 @@ jobs:
       - name: Publish Asset to Exchange
         env:
           ANYPOINT_TOKEN: ${{ secrets.ANYPOINT_TOKEN }}
-        run: |
-          curl -X POST "https://anypoint.mulesoft.com/exchange/api/v2/assets" \
-            -H "X-ANYPNT-ORG-ID: ${{ secrets.ANYPOINT_ORG_ID }}" \
-            -H "X-ANYPNT-ENV-ID: ${{ secrets.ANYPOINT_ORG_ID }}" \
-            -H "Authorization: Bearer ${{ secrets.ANYPOINT_TOKEN }}" \
-            -H "Content-Type: multipart/form-data" \
-            -F "assetId=mycicddemoapiiii" \
-            -F "version=1.0.1" \
-            -F "name=my cicd demo app" \
-            -F "classifier=raml" \
-            -F "apiVersion=v1" \
-            -F "asset=@./calculator.raml" \
+        run: |          
+          curl --location 'https://anypoint.mulesoft.com/exchange/api/v1/assets' \
+             --header 'Authorization: Bearer 2d8edace-33b6-453f-ab02-8762ac14f0cc' \
+             --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
+             --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
+             --form 'assetId="mycicddemoapi"' \
+             --form 'version="1.0.0"' \
+             --form 'name="my cicd app"' \
+             --form 'classifier="raml"' \
+             --form 'apiVersion="v1"' \
+             --form 'asset=@./calculator.raml"'
           echo "Asset published to Exchange successfully"
-          echo "Asset published Successfully"
 
       - name: Create API in API Manager
         env:
