@@ -95,7 +95,6 @@ jobs:
          git config --local user.name "nageshambati100"
          git add ./mynewapiid.txt
          git commit -m "Add API ID"
-         git push
       - name: Read API ID
         run: |
           new_api_id=$(cat ./mynewapiid.txt)
