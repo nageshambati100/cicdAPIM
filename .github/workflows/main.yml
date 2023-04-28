@@ -28,9 +28,9 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{"username":"'${ANYPOINT_USERNAME}'","password":"'${ANYPOINT_PASSWORD}'"}')
           token=$(echo $response | jq -r '.access_token')
+          echo "Anypoint Platform login successful"
         id: login
         continue-on-error: true
-          echo "Anypoint Platform login successful"
           
       - name: Check if login was successful
         run: |
@@ -54,7 +54,17 @@ jobs:
              --form 'apiVersion="v1"' \
              --form "asset=@./calculator.raml"
           echo "Asset published to Exchange successfully"
-
+        id: publish_asset
+        continue-on-error: true
+        
+      - name: Check if asset was published successfully
+        if: success() && steps.publish_asset.outputs.status == 201
+        run: |
+          echo "Asset was published successfully"
+        if: success() && steps.publish_asset.outputs.status != 201
+        run: |
+          echo "Error: Failed to publish asset"
+          exit 1
       - name: Create API in API Manager
         env:
           ANYPOINT_TOKEN: ${{ secrets.ANYPOINT_TOKEN }}
