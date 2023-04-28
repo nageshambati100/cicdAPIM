@@ -61,7 +61,7 @@ jobs:
         
       - name: Check if asset was published successfully
           echo "Asset publishing status code ${{ steps.publish_asset.outputs.status }}"
-        if: success() && (steps.publish_asset.outputs.status != 201 || steps.publish_asset.outputs.status != 200)
+        if: success() && (steps.publish_asset.outputs.status != '201' || steps.publish_asset.outputs.status != '200')
         run: |
           echo "Error: Failed to publish asset"
           exit 1
