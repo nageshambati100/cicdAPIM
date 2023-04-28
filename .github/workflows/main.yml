@@ -48,7 +48,7 @@ jobs:
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilgha"' \
-             --form 'version="1.0.2"' \
+             --form 'version="1.0.3"' \
              --form 'name="my cicd demo app new gha"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
@@ -84,13 +84,13 @@ jobs:
           ANYPOINT_ORG_ID: ${{ secrets.ANYPOINT_ORG_ID }}
 
         run: |
-         HTTP_RESPONSE=$(curl --silent --write-out "HTTPSTATUS:%{http_code}" --location 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis'\
-         --header 'Authorization: Bearer b0cb08af-45bf-4405-a268-a14e4b8ef67a' \
-         --header 'Content-Type: application/json' \
-         --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"ghacicd","version":"1.0.0"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":"githhubactionscicd}')
-          HTTP_BODY=$(echo $HTTP_RESPONSE | sed -e 's/HTTPSTATUS\:.*//g')
-          echo "API created in API Manager with ID ${HTTP_BODY}"
-          echo "$api_id" > api_id.txt
+           HTTP_RESPONSE=$(curl --silent --write-out "HTTPSTATUS:%{http_code}" -X POST 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis'\
+           --header 'Authorization: Bearer b0cb08af-45bf-4405-a268-a14e4b8ef67a' \
+           --header 'Content-Type: application/json' \
+           --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"ghacicd","version":"1.0.0"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":"githhubactionscicd}')
+           HTTP_BODY=$(echo $HTTP_RESPONSE | sed -e 's/HTTPSTATUS\:.*//g')
+           echo "API created in API Manager with ID ${HTTP_BODY}"
+           echo "$api_id" > api_id.txt
       - name: Commit API ID to repo
         run: |
          git config --local user.email "nageshambati100@gmail.com"
