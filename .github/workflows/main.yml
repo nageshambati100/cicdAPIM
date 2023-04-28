@@ -54,6 +54,7 @@ jobs:
              --form 'apiVersion="v1"' \
              --form "asset=@./calculator.raml"
           echo "Asset published to Exchange successfully"
+          echo steps.publish_asset.outputs.status
         id: publish_asset
         continue-on-error: true
         
