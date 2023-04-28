@@ -44,7 +44,7 @@ jobs:
           ANYPOINT_TOKEN: ${{ secrets.ANYPOINT_TOKEN }}
         run: |          
           curl --location 'https://anypoint.mulesoft.com/exchange/api/v1/assets' \
-             --header 'Authorization: Bearer 2d8edace-33b6-453f-ab02-8762ac14f0cc' \
+             --header 'Authorization: Bearer cae47a7f-d501-4016-a1aa-1f2385e033f7' \
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilaprilnew"' \
