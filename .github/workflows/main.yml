@@ -86,7 +86,10 @@ jobs:
           API_ID_FILE: api_id.txt
 
         run: |
-           api_id=$(curl -s -X POST -H "Authorization: Bearer 150d7f5f-a2c0-470e-94b6-a7c96eb655e0" -H "Content-Type: application/json" -d @$API_DEFINITION_FILE "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis" | jq -r '.id')
+           api_id=$(curl --location 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis' \
+            --header 'Authorization: Bearer 150d7f5f-a2c0-470e-94b6-a7c96eb655e0' \
+            --header 'Content-Type: application/json' \
+            --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapi28april","version":"1.0.0"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":null}' | jq -r '.id')
            echo "API created in API Manager with ID ${api_id}"
            echo "$api_id" > api_id.txt
            
