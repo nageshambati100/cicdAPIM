@@ -80,13 +80,10 @@ jobs:
               }
             }
         run: |
-          response=$(curl -s -X POST "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/${ANYPOINT_ORG_ID}/environments/Sandbox/apis" \
+          response=$(curl -s -X POST "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis" \
             -H "Authorization: Bearer ${ANYPOINT_TOKEN}" \
             -H "Content-Type: application/json" \
-            -d '{
-              "name": "'${API_NAME}'",
-              "spec": '${API_DEFINITION}'
-            }')
+            --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapi28april","version":"1.0.1"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":null}')
           api_id=$(echo $response | jq -r '.id')
           echo "API created in API Manager with ID ${api_id}"
 
