@@ -1,11 +1,20 @@
 #%RAML 1.0
-title: cicdDemo28April
-
-/cicdDemo:
+title: calculator
+baseUri: http://calculator.com
+mediaType:
+  - application/json
+version: 1.0.0
+protocols:
+  - HTTP
+/calculator:
   get:
+    queryParameters:
+      operation:
+        example: Example
+        type: string
     responses:
-      200:
-        body:
-          application/json:
-            example:
-              value: 200
+      "200":
+        description: |-
+          {
+          "Answer": 100
+          }
