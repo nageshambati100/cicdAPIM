@@ -41,8 +41,8 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.ANYPOINT_TOKEN }}" \
             -H "Content-Type: multipart/form-data" \
             -F "file=@./calculator.raml" \
-            -F "assetName=CICD RAML" \
-            -F "assetVersion=1.0.0" \
+            -F "assetName=cicdRamlforDemo" \
+            -F "assetVersion=1.0.1" \
             -F "assetType=raml" \
             -F "assetDescription=My RAML Description"
           echo "Asset published to Exchange successfully"
