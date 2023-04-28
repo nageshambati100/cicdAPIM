@@ -48,7 +48,7 @@ jobs:
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilgha"' \
-             --form 'version="1.0.16"' \
+             --form 'version="1.0.17"' \
              --form 'name="my cicd demo app new gha"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
@@ -91,13 +91,13 @@ jobs:
             --header 'Content-Type: application/json' \
             --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapi28april","version":"1.0.0"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":null}' | jq -r '.id')
            echo "API created in API Manager with ID ${api_id}"
-           echo "$api_id" > @./myapiid.txt
+           echo "$api_id" > cicdAPIM/.github/workflows/myapiid.txt
            
       - name: Commit API ID to repo
         run: |
          git config --local user.email "nageshambati100@gmail.com"
          git config --local user.name "nageshambati100"
-         git add ./myapiid.txt
+         git add cicdAPIM/.github/workflows/myapiid.txt
          git commit -m "Add API ID"
       - name: Output API ID
         run: |
