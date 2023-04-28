@@ -41,13 +41,12 @@ jobs:
             -H "Content-Type: multipart/form-data" \
             -F "organizationId=8ccbc578-b790-45f9-9859-bca06c81adcd"
             -F "groupId=8ccbc578-b790-45f9-9859-bca06c81adcd"
-            -F "asset=@./calculator.raml" \
             -F "assetId=mycicddemoapiiii" \
             -F "version=1.0.1" \
             -F "name=my cicd demo app" \
-            -F "apiVersion=v1" \
             -F "classifier=raml" \
-            -F "assetDescription=My RAML Description"
+            -F "apiVersion=v1" \
+            -F "asset=@./calculator.raml" \
           echo "Asset published to Exchange successfully"
           echo "Asset published Successfully"
 
