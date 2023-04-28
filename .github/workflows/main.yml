@@ -38,7 +38,7 @@ jobs:
              --header 'Authorization: Bearer 2d8edace-33b6-453f-ab02-8762ac14f0cc' \
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
-             --form 'assetId="mycicddemoapi28april"' \
+             --form 'assetId="mycicddemoapiaprilapril"' \
              --form 'version="1.0.0"' \
              --form 'name="my cicd demo app"' \
              --form 'classifier="raml"' \
@@ -55,7 +55,7 @@ jobs:
           response=$(curl -s -X POST "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis" \
             -H "Authorization: Bearer ${ANYPOINT_TOKEN}" \
             -H "Content-Type: application/json" \
-            --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapi28april","version":"1.0.1"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":null}')
+            --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapiaprilapril","version":"1.0.0"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":null}')
           api_id=$(echo $response | jq -r '.id')
           echo "API created in API Manager with ID ${api_id}"
 
