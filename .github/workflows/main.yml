@@ -48,7 +48,7 @@ jobs:
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilgha"' \
-             --form 'version="1.0.4"' \
+             --form 'version="1.0.5"' \
              --form 'name="my cicd demo app new gha"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
@@ -84,9 +84,8 @@ jobs:
           ANYPOINT_ORG_ID: ${{ secrets.ANYPOINT_ORG_ID }}
 
         run: |
-           response=$(curl -s --w "%{http_code}" -o /dev/null --location 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis'\
+           response=$(curl curl -X POST 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis'\
            --header 'Authorization: Bearer 6c7fe6bd-8c01-455c-919b-d384a6120167' \
-           --header 'Content-Type: application/json' \
            --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"ghacicd","version":"1.0.0"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":"githhubactionscicd}')
            api_id=$(echo "$response" | jq -r '.id')
            echo "API created in API Manager with ID ${api_id}"
