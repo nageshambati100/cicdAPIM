@@ -1,0 +1,50 @@
+#%RAML 1.0
+title: My API
+version: v1
+baseUri: https://api.example.com/{version}
+
+mediaType: application/json
+
+securitySchemes:
+  - basic:
+      type: Basic Authentication
+
+/accounts:
+  get:
+    description: Retrieve a list of accounts
+    securedBy: [ basic ]
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              [
+                {
+                  "id": 123,
+                  "name": "John Doe"
+                },
+                {
+                  "id": 456,
+                  "name": "Jane Doe"
+                }
+              ]
+  post:
+    description: Create a new account
+    securedBy: [ basic ]
+    body:
+      application/json:
+        example: |
+          {
+            "name": "Alice",
+            "email": "alice@example.com"
+          }
+    responses:
+      201:
+        body:
+          application/json:
+            example: |
+              {
+                "id": 789,
+                "name": "Alice",
+                "email": "alice@example.com"
+              }
