@@ -48,7 +48,7 @@ jobs:
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilgha"' \
-             --form 'version="1.0.15"' \
+             --form 'version="1.0.16"' \
              --form 'name="my cicd demo app new gha"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
@@ -91,7 +91,7 @@ jobs:
             --header 'Content-Type: application/json' \
             --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapi28april","version":"1.0.0"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":null}' | jq -r '.id')
            echo "API created in API Manager with ID ${api_id}"
-           echo "$api_id" > ./myapiid.txt
+           echo "$api_id" > @./myapiid.txt
            
       - name: Commit API ID to repo
         run: |
