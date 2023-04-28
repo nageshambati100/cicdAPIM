@@ -48,7 +48,7 @@ jobs:
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilgha"' \
-             --form 'version="1.0.22"' \
+             --form 'version="1.0.23"' \
              --form 'name="my cicd demo app new gha"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
@@ -70,9 +70,10 @@ jobs:
         run: |
          api_id=$(cat ./mynewapiid.txt)
           if [ -z "${api_id}" ]; then
-            echo "API ID does not exist in API Manager"
+            run: echo "Create API in API Manager output: ${{ steps.step1.outputs.my-output }}"
           else
             echo "API ID exists in API Manager"
+            exit 1
          fi
       - name: Create API in API Manager
         env:
