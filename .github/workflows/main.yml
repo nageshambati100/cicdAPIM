@@ -43,7 +43,7 @@ jobs:
         env:
           ANYPOINT_TOKEN: ${{ secrets.ANYPOINT_TOKEN }}
         run: |          
-          curl --location 'https://anypoint.mulesoft.com/exchange/api/v1/assets' \
+           status=$(curl --location 'https://anypoint.mulesoft.com/exchange/api/v1/assets' \
              --header 'Authorization: Bearer cae47a7f-d501-4016-a1aa-1f2385e033f7' \
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
@@ -52,10 +52,10 @@ jobs:
              --form 'name="my cicd demo app new"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
-             --form "asset=@./calculator.raml"
-          echo "Asset published to Exchange successfully"
-          echo "Asset published successfully with status code ${{ steps.publish_asset.outputs.status }}"
-          status=$(echo $response | jq -r '.status')
+             --form "asset=@./calculator.raml")
+           echo "Asset published to Exchange successfully"
+           echo "Asset published successfully with status code ${{ steps.publish_asset.outputs.status }}"
+           echo "::set-output name=status::$status"
         id: publish_asset
         continue-on-error: true
         
