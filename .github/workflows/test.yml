@@ -1,0 +1,18 @@
+name: Execute Groovy Script
+
+on: [push]
+
+jobs:
+  execute_groovy_script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+
+      - name: Execute Groovy Script
+        run: java -jar groovy.jar myscript.groovy
