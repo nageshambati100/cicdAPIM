@@ -38,8 +38,16 @@ jobs:
             -H "X-ANYPNT-ORG-ID: ${{ secrets.ANYPOINT_ORG_ID }}" \
             -H "X-ANYPNT-ENV-ID: ${{ secrets.ANYPOINT_ORG_ID }}" \
             -H "Authorization: Bearer ${{ secrets.ANYPOINT_TOKEN }}" \
+            -H "Content-Type: multipart/form-data" \
+            -F "organizationId=${{ secrets.ANYPOINT_ORG_ID }}
+            -F "groupId=${{ secrets.ANYPOINT_ORG_ID }}
             -F "asset=@./calculator.raml" \
-            -F "assetMeta=@./exchange.json" \
+            -F "assetId=mycicddemoapiiii" \
+            -F "version=1.0.1" \
+            -F "name=my cicd demo app" \
+            -F "apiVersion=v1" \
+            -F "classifier=raml" \
+            -F "assetDescription=My RAML Description"
           echo "Asset published to Exchange successfully"
           echo "Asset published Successfully"
 
