@@ -44,12 +44,12 @@ jobs:
           ANYPOINT_TOKEN: ${{ secrets.ANYPOINT_TOKEN }}
         run: |          
            status=$(curl -s -w "%{http_code}" -o /dev/null --location 'https://anypoint.mulesoft.com/exchange/api/v1/assets' \
-             --header 'Authorization: Bearer 5c811446-4b22-4dcb-bdf1-f173fda106f4' \
+             --header 'Authorization: Bearer b0cb08af-45bf-4405-a268-a14e4b8ef67a' \
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
-             --form 'assetId="mycicddemoapiaprilaprilnew"' \
-             --form 'version="1.0.8"' \
-             --form 'name="my cicd demo app new"' \
+             --form 'assetId="mycicddemoapiaprilgha"' \
+             --form 'version="1.0.0"' \
+             --form 'name="my cicd demo app new gha"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
              --form "asset=@./calculator.raml")
@@ -87,10 +87,16 @@ jobs:
           response=$(curl -s -X POST "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis" \
             -H "Authorization: Bearer ${ANYPOINT_TOKEN}" \
             -H "Content-Type: application/json" \
-            --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapiaprilapril","version":"1.0.0"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":null}')
+            --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapiaprilgha","version":"1.0.0"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":mycicddemoapiaprilgha}')
           api_id=$(echo $response | jq -r '.id')
           echo "API created in API Manager with ID ${api_id}"
-
+          echo "$api_id" > api_id.txt
+      - name: Commit API ID to repo
+        run: |
+         git config --local user.email "nageshambati100@gmail.com"
+         git config --local user.name "nageshambati100"
+         git add api_id.txt
+         git commit -m "Add API ID"
       - name: Output API ID
         run: |
           echo "::set-output name=api_id::${api_id}"
