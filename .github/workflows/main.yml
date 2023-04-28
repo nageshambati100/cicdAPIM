@@ -48,7 +48,7 @@ jobs:
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilgha"' \
-             --form 'version="1.0.19"' \
+             --form 'version="1.0.20"' \
              --form 'name="my cicd demo app new gha"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
@@ -68,12 +68,8 @@ jobs:
       - name: Check if API ID exists in API Manager
         if: success()
         run: |
-          api_id=$(curl -X GET \
-          "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/myorg/apis" \
-          -H "Authorization: Bearer ${{ secrets.ANYPOINT_TOKEN }}" \
-          -H "Content-Type: application/json" \
-          | jq '.data[{"myapi":"18659550"}] | select(.name == "myapi") | .id')
-          if [ -z "$api_id" ]; then
+         api_id=$(cat ./mynewapiid.txt)
+          if [ -z "${api_id}" ]; then
             echo "API ID does not exist in API Manager"
           else
             echo "API ID exists in API Manager"
