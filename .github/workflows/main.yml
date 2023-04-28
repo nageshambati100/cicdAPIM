@@ -84,18 +84,19 @@ jobs:
           ANYPOINT_ORG_ID: ${{ secrets.ANYPOINT_ORG_ID }}
 
         run: |
-          response=$(curl -s -X POST "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis" \
-            -H "Authorization: Bearer ${ANYPOINT_TOKEN}" \
-            -H "Content-Type: application/json" \
-            --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapiaprilgha","version":"1.0.0"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":mycicddemoapiaprilgha}')
-          api_id=$(echo $response | jq -r '.id')
-          echo "API created in API Manager with ID ${api_id}"
-          echo "$api_id" > api_id.txt
+         response=$(curl -X POST \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Bearer ${{ secrets.API_MANAGER_TOKEN }}" \
+          --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapigha","version":"1.0.0"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":"mycicddemoapighanew"}' \
+          https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis)
+          api_id=$(echo "$response" | jq -r '.id')
+           echo "API created in API Manager with ID ${api_id}"
+           echo "$api_id" > api_id.txt
       - name: Commit API ID to repo
         run: |
          git config --local user.email "nageshambati100@gmail.com"
          git config --local user.name "nageshambati100"
-         git add api_id.txt
+         git add ./api_id.txt
          git commit -m "Add API ID"
       - name: Output API ID
         run: |
