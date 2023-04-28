@@ -48,7 +48,7 @@ jobs:
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilgha"' \
-             --form 'version="1.0.9"' \
+             --form 'version="1.0.10"' \
              --form 'name="my cicd demo app new gha"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
@@ -89,7 +89,7 @@ jobs:
            --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"ghacicd","version":"1.0.0"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":"githhubactionscicd}')
            api_id=$(echo "$response" | jq -r '.id')
            id: create_api_id
-           echo "::set-output name=response::$id"
+           echo "::set-output name=response::$response"
            echo "API created in API Manager with ID ${api_id}"
            echo "$api_id" > api_id.txt
            
