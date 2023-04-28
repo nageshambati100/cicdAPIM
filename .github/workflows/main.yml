@@ -39,8 +39,6 @@ jobs:
             -H "X-ANYPNT-ENV-ID: ${{ secrets.ANYPOINT_ORG_ID }}" \
             -H "Authorization: Bearer ${{ secrets.ANYPOINT_TOKEN }}" \
             -H "Content-Type: multipart/form-data" \
-            -F "organizationId=8ccbc578-b790-45f9-9859-bca06c81adcd"
-            -F "groupId=8ccbc578-b790-45f9-9859-bca06c81adcd"
             -F "assetId=mycicddemoapiiii" \
             -F "version=1.0.1" \
             -F "name=my cicd demo app" \
