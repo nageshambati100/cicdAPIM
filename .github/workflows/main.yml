@@ -48,7 +48,7 @@ jobs:
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilaprilnew"' \
-             --form 'version="1.0.0"' \
+             --form 'version="1.0.1"' \
              --form 'name="my cicd demo app new"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
@@ -59,7 +59,7 @@ jobs:
         continue-on-error: true
         
       - name: Check if asset was published successfully
-        if: success() && steps.publish_asset.outputs.status != 201
+        if: success() && (steps.publish_asset.outputs.status != 201 || steps.publish_asset.outputs.status != 200)
         run: |
           echo "Error: Failed to publish asset"
           exit 1
