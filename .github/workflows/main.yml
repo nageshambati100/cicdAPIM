@@ -48,7 +48,7 @@ jobs:
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilgha"' \
-             --form 'version="1.0.18"' \
+             --form 'version="1.0.19"' \
              --form 'name="my cicd demo app new gha"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
@@ -99,6 +99,8 @@ jobs:
          git config --local user.name "nageshambati100"
          git add ./mynewapiid.txt
          git commit -m "Add API ID"
-      - name: Output API ID
+      - name: Read API ID
         run: |
+          new_api_id=$(cat ./mynewapiid.txt)
+          echo "API created in API Manager with ID ${new_api_id}"
           echo "::set-output name=api_id::${api_id}"
