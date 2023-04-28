@@ -58,13 +58,23 @@ jobs:
         continue-on-error: true
         
       - name: Check if asset was published successfully
-        if: success() && steps.publish_asset.outputs.status == 201
-        run: |
-          echo "Asset was published successfully"
         if: success() && steps.publish_asset.outputs.status != 201
         run: |
           echo "Error: Failed to publish asset"
           exit 1
+      - name: Check if API ID exists in API Manager
+        if: success()
+        run: |
+          api_id=$(curl -X GET \
+          "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/myorg/apis" \
+          -H "Authorization: Bearer ${{ secrets.ANYPOINT_TOKEN }}" \
+          -H "Content-Type: application/json" \
+          | jq '.data[] | select(.name == "myapi") | .id')
+          if [ -z "$api_id" ]; then
+            echo "API ID does not exist in API Manager"
+          else
+            echo "API ID exists in API Manager"
+          fi
       - name: Create API in API Manager
         env:
           ANYPOINT_TOKEN: ${{ secrets.ANYPOINT_TOKEN }}
