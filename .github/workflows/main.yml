@@ -43,7 +43,7 @@ jobs:
              --form 'name="my cicd app"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
-             --form 'asset=@./calculator.raml"'
+             --form "asset=@./calculator.raml"
           echo "Asset published to Exchange successfully"
 
       - name: Create API in API Manager
