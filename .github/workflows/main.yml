@@ -49,7 +49,7 @@ jobs:
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilgha"' \
-             --form 'version="1.0.44"' \
+             --form 'version="1.0.45"' \
              --form 'name="my cicd demo app new gha"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
@@ -105,6 +105,36 @@ jobs:
            echo "API created in API Manager with ID ${api_id}"
            echo "${api_id}" > ./mynewapiid.txt
 
+      - name: Apply policies to API
+        run: |
+          policy_name="My Rate Limit Policy"
+          policy_definition_path="./policy.yaml"
+          policy_id=$(curl --location --request POST "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/policies" \
+            --header "Content-Type: application/json" \
+            --header 'Authorization: Bearer e93d4b8d-c2aa-41a6-869e-ba8534bb0c0b' \
+            --data-raw "{
+            \"name\": \"${policy_name}\",
+            \"spec\": {
+                \"type\": \"RATE_LIMIT\",
+                \"content\": \"$(cat ${policy_definition_path} | base64)\"
+            }
+          }" | jq -r '.id')
+
+          echo "Policy created with ID ${policy_id}"
+          curl --location --request POST "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis/${api_id}/policies" \
+            --header "Content-Type: application/json" \
+            --header 'Authorization: Bearer e93d4b8d-c2aa-41a6-869e-ba8534bb0c0b' \
+            --data-raw "{
+            \"policyId\": \"${policy_id}\",
+            \"policyType\": \"RATE_LIMIT\",
+            \"position\": {
+                \"after\": null,
+                \"before\": null,
+                \"path\": \"\"
+            }
+          }"
+
+          echo "Policy applied to API"
            
       - name: Commit API ID to repo
         run: |
