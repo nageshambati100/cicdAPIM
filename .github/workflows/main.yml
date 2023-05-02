@@ -90,6 +90,7 @@ jobs:
             exit 0
          fi
       - name: Create API in API Manager
+        if:  ${{ env.apialreadyCreated != "Yes"}}
         env:
           ANYPOINT_TOKEN: ${{ secrets.ANYPOINT_TOKEN }}
           ANYPOINT_ORG_ID: ${{ secrets.ANYPOINT_ORG_ID }}
@@ -103,7 +104,7 @@ jobs:
             --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapi28april","version":"1.0.0"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":null}' | jq -r '.id')
            echo "API created in API Manager with ID ${api_id}"
            echo "${api_id}" > ./mynewapiid.txt
-        if:  ${{ env.apialreadyCreated != "Yes"}}
+
            
       - name: Commit API ID to repo
         run: |
