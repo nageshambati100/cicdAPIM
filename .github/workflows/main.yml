@@ -90,7 +90,7 @@ jobs:
             exit 0
          fi
       - name: Create API in API Manager
-        if:  ${{ env.apialreadyCreated != "Yes"}}
+        if:  ${{ env.apialreadyCreated != 'Yes'}}
         env:
           ANYPOINT_TOKEN: ${{ secrets.ANYPOINT_TOKEN }}
           ANYPOINT_ORG_ID: ${{ secrets.ANYPOINT_ORG_ID }}
