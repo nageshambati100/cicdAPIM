@@ -104,7 +104,7 @@ jobs:
            echo "${api_id}" > ./mynewapiid.txt
 
       - name: Apply policies to API
-        if: success() && (steps.apiIdExistsornot.outputs.apialreadyCreated != 'Yes' && [ -z "${api_id}" ])
+        if: success() && (steps.apiIdExistsornot.outputs.apialreadyCreated != 'Yes')
         run: |
           policy_name="My Rate Limit Policy"
           policy_definition_path="./policy.yaml"
