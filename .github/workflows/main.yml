@@ -44,11 +44,11 @@ jobs:
           ANYPOINT_TOKEN: ${{ secrets.ANYPOINT_TOKEN }}
         run: |          
            status=$(curl -s -w "%{http_code}" -o /dev/null --location 'https://anypoint.mulesoft.com/exchange/api/v1/assets' \
-             --header 'Authorization: Bearer 150d7f5f-a2c0-470e-94b6-a7c96eb655e0' \
+             --header 'Authorization: Bearer 76604e0f-ade6-4b23-9148-43c83d1d5268' \
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilgha"' \
-             --form 'version="1.0.24"' \
+             --form 'version="1.0.25"' \
              --form 'name="my cicd demo app new gha"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
@@ -75,7 +75,7 @@ jobs:
             echo "API ID exists in API Manager"
          run: |
            api_id=$(curl --location --request PATCH 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis/18660433' \
-            --header 'Authorization: Bearer a95de9e0-f281-4c70-b501-fcdab3402a59' \
+            --header 'Authorization: Bearer 76604e0f-ade6-4b23-9148-43c83d1d5268' \
             --header 'Content-Type: application/json' \
             --header 'Cookie: XSRF-TOKEN=e0WEQ67j-QASPpTuShsNYflSHjsDz15w2lSU; _csrf=oKQwgbfiUHeFPqnIfDz_rsKd; mulesoft.sess=eyJpZCI6IkViVVJfWHFzM1g5Z1hkU201MWhhblgzTmJyS1V0RXdUIiwicGFzc3BvcnQiOnsidXNlciI6eyJ1c2VyX2lkIjoiZmU0ZDgzYjUtNGFmMi00MGZhLWFkYjgtMTJhNmQ1ZTdiYzVhIn19fQ==; mulesoft.sess.sig=G8muQqC4Sdlivayk8QKMYZgoYtk' \
             --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapi28april","version":"1.0.1"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":null}' | jq -r '.id')
@@ -93,7 +93,7 @@ jobs:
 
         run: |
            api_id=$(curl --location 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis' \
-            --header 'Authorization: Bearer 150d7f5f-a2c0-470e-94b6-a7c96eb655e0' \
+            --header 'Authorization: Bearer 76604e0f-ade6-4b23-9148-43c83d1d5268' \
             --header 'Content-Type: application/json' \
             --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapi28april","version":"1.0.0"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":null}' | jq -r '.id')
            echo "API created in API Manager with ID ${api_id}"
