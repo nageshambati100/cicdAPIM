@@ -49,7 +49,7 @@ jobs:
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilgha"' \
-             --form 'version="1.0.41"' \
+             --form 'version="1.0.42"' \
              --form 'name="my cicd demo app new gha"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
@@ -68,14 +68,16 @@ jobs:
           exit 1
       - name: Check if API ID exists in API Manager
         if: success()
+        env:
+          apialreadyCreated: "No"
         run: |
           api_id=$(cat ./mynewapiid.txt)
-          apialreadyCreated: "No"
+          
           if [ -z "${api_id}" ]; then
             echo "Create API in API Manager output: ${{ steps.step1.outputs.my-output }}"
           else
             echo "API ID exists in API Manager"
-            apialreadyCreated: "Yes"
+            export apialreadyCreated="Yes"
             api_id=$(curl --location --request PATCH 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis/18660433' \
             --header 'Authorization: Bearer e93d4b8d-c2aa-41a6-869e-ba8534bb0c0b' \
             --header 'Content-Type: application/json' \
@@ -85,7 +87,8 @@ jobs:
            echo "${api_id}" > ./mynewapiid.txt
           fi
       - name: Create API in API Manager
-         echo "apialreadyCreated--> ${apialreadyCreated}"
+         echo "apialreadyCreated-1--> ${apialreadyCreated}"
+         echo "apialreadyCreated-2--> ${{ env.apialreadyCreated}}
         if:  ${{ env.apialreadyCreated != 'Yes'}}
         env:
           ANYPOINT_TOKEN: ${{ secrets.ANYPOINT_TOKEN }}
