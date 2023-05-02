@@ -49,7 +49,7 @@ jobs:
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilgha"' \
-             --form 'version="1.0.35"' \
+             --form 'version="1.0.36"' \
              --form 'name="my cicd demo app new gha"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
@@ -73,7 +73,7 @@ jobs:
         run: |
           api_id=$(cat ./mynewapiid.txt)
           if [ -z "${api_id}" ]; then
-            run: echo "Create API in API Manager output: ${{ steps.step1.outputs.my-output }}"
+            echo "Create API in API Manager output: ${{ steps.step1.outputs.my-output }}"
           else
             echo "API ID exists in API Manager"
             env:
@@ -85,8 +85,6 @@ jobs:
             --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapi28april","version":"1.0.1"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":"testCICD"}' | jq -r '.id')
            echo "API Updated in API Manager with ID ${api_id}"
            echo "${api_id}" > ./mynewapiid.txt
-            
-            exit 0
           fi
       - name: Create API in API Manager
         if:  ${{ env.apialreadyCreated != 'Yes'}}
