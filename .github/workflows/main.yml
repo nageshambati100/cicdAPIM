@@ -1,11 +1,9 @@
-name: Publish Asset and Create API
+name: APIM CICD
 
 on:
   push:
     branches:
       - main
-
-
 jobs:
   publish_and_create_api:
     runs-on: ubuntu-latest
@@ -22,12 +20,12 @@ jobs:
 
       - name: Login to Anypoint Platform
         env:
-          ANYPOINT_USERNAME: ${{ secrets.ANYPOINT_USERNAME }}
-          ANYPOINT_PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
+          CLIENT_ID: ${{ secrets.client_id }}
+          CLIENT_SECRET: ${{ secrets.client_secret }}
         run: |
           response=$(curl -s -X POST "https://anypoint.mulesoft.com/accounts/login" \
             -H "Content-Type: application/json" \
-            -d '{"username":"'${ANYPOINT_USERNAME}'","password":"'${ANYPOINT_PASSWORD}'"}')
+            -d '{"client_id":"'${CLIENT_ID}'","client_secret":"'${CLIENT_SECRET}'","grant_type":"'client_credentials'"}')
           token=$(echo $response | jq -r '.access_token')
           echo "Anypoint Platform login successful"
         id: login
@@ -49,7 +47,7 @@ jobs:
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilgha"' \
-             --form 'version="1.0.48"' \
+             --form 'version="1.0.49"' \
              --form 'name="my cicd demo app new gha"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
@@ -106,34 +104,21 @@ jobs:
            echo "${api_id}" > ./mynewapiid.txt
 
       - name: Apply policies to API
+        if: success() && (steps.apiIdExistsornot.outputs.apialreadyCreated != 'Yes' && [ -z "${api_id}" ])
         run: |
           policy_name="My Rate Limit Policy"
           policy_definition_path="./policy.yaml"
-          policy_id=$(curl --location --request POST "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis/18660433/policies" \
+          api_id=$(curl --location --request POST "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis/18660433/policies" \
             --header "Content-Type: application/json" \
             --header 'Authorization: Bearer 60329bfc-974c-47d0-8c9e-4c6622229c93' \
-            --data-raw "{
-            \"name\": \"${policy_name}\",
-            \"spec\": {
-                \"type\": \"RATE_LIMIT\",
-                \"content\": \"$(cat ${policy_definition_path} | base64)\"
-            }
-          }" | jq -r '.id')
+            --data '{
+              "configurationData":{
+                "clusterizable":true,
+                "exposeHeaders":true,
+                  "rateLimits": [{"timePeriodInMilliseconds": 86400000, "maximumRequests": 1000}] 
+                }")
 
-          echo "Policy created with ID ${policy_id}"
-          curl --location --request POST "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis/18660433/policies" \
-            --header "Content-Type: application/json" \
-            --header 'Authorization: Bearer 60329bfc-974c-47d0-8c9e-4c6622229c93' \
-            --data-raw "{
-            \"policyId\": \"${policy_id}\",
-            \"policyType\": \"RATE_LIMIT\",
-            \"position\": {
-                \"after\": null,
-                \"before\": null,
-                \"path\": \"\"
-            }
-          }"
-
+          echo "Policy has been applied for APIID ${api_id}"
           echo "Policy applied to API"
            
       - name: Commit API ID to repo
