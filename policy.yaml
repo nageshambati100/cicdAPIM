@@ -1,0 +1,28 @@
+# Rate limit policy
+
+# The name of the policy
+name: rate-limit
+
+# The configuration of the policy
+configuration:
+  # The number of requests allowed within the time period
+  requests: 100
+
+  # The time period in seconds
+  timePeriod: 60
+
+  # The key to use for rate limiting. By default, the IP address of the client is used.
+  # You can use a different key by specifying an expression that evaluates to a string.
+  # For example, if you want to rate limit based on the value of the 'X-Forwarded-For' header,
+  # you can use the expression 'message.headers["X-Forwarded-For"]'
+  key: message.remoteAddress
+
+# The scopes that the policy applies to
+scopes:
+  # The name of the API
+  my-api:
+    # The name of the endpoint
+    /calculator:
+      # The methods that the policy applies to
+      - GET
+      - POST
