@@ -49,7 +49,7 @@ jobs:
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilgha"' \
-             --form 'version="1.0.29"' \
+             --form 'version="1.0.30"' \
              --form 'name="my cicd demo app new gha"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
@@ -62,16 +62,20 @@ jobs:
         
       - name: Check if asset was published successfully
           echo "Asset publishing status code ${{ steps.publish_asset.outputs.status }}"
-        if: success() && (steps.publish_asset.outputs.status != '201' && steps.publish_asset.outputs.status != '200')
+        if: success() && (steps.publish_asset.outputs.status != '201' && steps.publish_asset.outputs.status != '200')     
         run: |
           echo "Error: Failed to publish asset"
           exit 1
       - name: Check if API ID exists in API Manager
         if: success()
+        env:
+           apialreadyCreated: "No"
         run: |
          api_id=$(cat ./mynewapiid.txt)
           if [ -z "${api_id}" ]; then
             run: echo "Create API in API Manager output: ${{ steps.step1.outputs.my-output }}"
+         env:
+           apialreadyCreated: "Yes"
           else
             echo "API ID exists in API Manager"
          run: |
@@ -86,6 +90,7 @@ jobs:
             exit 0
          fi
       - name: Create API in API Manager
+        if:  ${{ env.apialreadyCreated }}" != "Yes"
         env:
           ANYPOINT_TOKEN: ${{ secrets.ANYPOINT_TOKEN }}
           ANYPOINT_ORG_ID: ${{ secrets.ANYPOINT_ORG_ID }}
