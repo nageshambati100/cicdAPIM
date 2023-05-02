@@ -49,7 +49,7 @@ jobs:
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilgha"' \
-             --form 'version="1.0.31"' \
+             --form 'version="1.0.32"' \
              --form 'name="my cicd demo app new gha"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
@@ -69,15 +69,15 @@ jobs:
       - name: Check if API ID exists in API Manager
         if: success()
         env:
-           apialreadyCreated: "No"
+          apialreadyCreated: 'No'
         run: |
          api_id=$(cat ./mynewapiid.txt)
           if [ -z "${api_id}" ]; then
             run: echo "Create API in API Manager output: ${{ steps.step1.outputs.my-output }}"
-         env:
-           apialreadyCreated: "Yes"
           else
             echo "API ID exists in API Manager"
+            env:
+              apialreadyCreated: 'Yes'
          run: |
            api_id=$(curl --location --request PATCH 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis/18660433' \
             --header 'Authorization: Bearer e93d4b8d-c2aa-41a6-869e-ba8534bb0c0b' \
