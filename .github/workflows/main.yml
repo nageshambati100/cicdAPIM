@@ -66,12 +66,14 @@ jobs:
              --form "apiVersion=$API_VERSION" \
              --form "asset=@./calculator.raml")
             echo "Asset publish response: $RESPONSE"
+            echo "environment variables $ORG_ID"
             if [ "$RESPONSE" != "201" ] || [ "$RESPONSE" != "200" ]; then
              echo "Error: Failed to publish asset to Exchange. Response code: $RESPONSE"
              exit 1
            fi
            echo "::set-output name=status::$status"
            echo "Asset published successfully with status code ${{ steps.publish_asset.outputs.status }}"
+
            
         id: publish_asset
         
