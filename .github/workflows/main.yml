@@ -47,15 +47,16 @@ jobs:
           echo "Access Token: $ACCESS_TOKEN"
           echo "::set-output name=ACCESS_TOKEN::$ACCESS_TOKEN"
           
-      - name: Read asset details
-        run: |
-          export $(grep -v '^#' asset_details.txt | xargs)
-          echo "environment variables $ORG_ID, $GROUP_ID, $ASSET_ID,$NAME"
       - name: Publish Asset to Exchange
         env:
           ACCESS_TOKEN: ${{ steps.login.outputs.ACCESS_TOKEN }}"
           echo "Access Token: ${{ steps.login.outputs.ACCESS_TOKEN }}"
         run: |
+          if [ ! -e "asset_details.txt" ]; then
+           echo "Error: asset_details.txt not found"
+           exit 1
+          fi
+           echo "Asset_details.txt file available"
            export $(grep -v '^#' asset_details.txt | xargs); \
            RESPONSE=$(curl -s -w "%{http_code}" -o /dev/null --location 'https://anypoint.mulesoft.com/exchange/api/v1/assets' \
              --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}' \
