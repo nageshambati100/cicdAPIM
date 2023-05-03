@@ -95,7 +95,7 @@ jobs:
               --header 'Authorization: Bearer 0e88033a-be36-4a37-b755-47400e7afb41' \
               --form 'Content-Type="application/zip"' \
               --form 'name="file"' \
-              --form 'file=@./proxyhttpapi-v1.zip' | jq -r '.id')
+              --form 'file=@./testingop-v1.zip' | jq -r '.id')
               echo "API created in API Manager with ID $api_id"
               if [ "$api_id" = null ]; then
                 echo "Error: Failed to create API in API Manager. "
