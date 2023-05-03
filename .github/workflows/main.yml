@@ -43,10 +43,10 @@ jobs:
       - name: Publish Asset to Exchange
         env:
           ACCESS_TOKEN: ${{ steps.login.outputs.ACCESS_TOKEN }}"
-          echo "Access Token: $ACCESS_TOKEN"
+          echo "Access Token: ${{ steps.login.outputs.ACCESS_TOKEN }}"
         run: |          
            status=$(curl -s -w "%{http_code}" -o /dev/null --location 'https://anypoint.mulesoft.com/exchange/api/v1/assets' \
-             --header 'Authorization: Bearer $ACCESS_TOKEN"' \
+             --header 'Authorization: Bearer $ACCESS_TOKEN' \
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilgha"' \
@@ -55,11 +55,15 @@ jobs:
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
              --form "asset=@./calculator.raml")
-           echo "Asset published to Exchange successfully"
-           echo "Asset published successfully with status code ${{ steps.publish_asset.outputs.status }}"
+             
+            if [ "$RESPONSE" != "201" ] || [ "$RESPONSE" != "200" ]; then
+             echo "Error: Failed to publish asset to Exchange. Response code: $RESPONSE"
+             exit 1
+           fi
            echo "::set-output name=status::$status"
+           echo "Asset published successfully with status code ${{ steps.publish_asset.outputs.status }}"
+           
         id: publish_asset
-        continue-on-error: true
         
       - name: Check if asset was published successfully
           echo "Asset publishing status code ${{ steps.publish_asset.outputs.status }}"
