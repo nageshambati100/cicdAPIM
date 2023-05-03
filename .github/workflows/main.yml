@@ -60,7 +60,7 @@ jobs:
            echo "Asset_details.txt file available"
            export $(grep -v '^#' asset_details.txt | xargs); \
            RESPONSE=$(curl -s -w "%{http_code}" -o /dev/null --location 'https://anypoint.mulesoft.com/exchange/api/v1/assets' \
-             --header 'Authorization: Bearer 0e88033a-be36-4a37-b755-47400e7afb41' \
+             --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}' \
              --form "organizationId=$ORG_ID" \
              --form "groupId=$GROUP_ID" \
              --form "assetId=$ASSET_ID" \
@@ -83,10 +83,10 @@ jobs:
         run: |
           if [ -f api_id.txt ]; then
             echo "API ID file exists. Updating API..."
-            api_id=$(curl --location --request PATCH 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORGID/environments/$ENVID/apis/18660433' \
-              --header 'Authorization: Bearer 4d358cd1-351c-467e-ac51-40074f49909a' \
+            api_id=$(cat api_id.txt)
+            api_id=$(curl --location --request PATCH 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORGID/environments/$ENVID/apis/$api_id' \
+              --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}' \
               --header 'Content-Type: application/json' \
-              --header 'Cookie: XSRF-TOKEN=e0WEQ67j-QASPpTuShsNYflSHjsDz15w2lSU; _csrf=oKQwgbfiUHeFPqnIfDz_rsKd; mulesoft.sess=eyJpZCI6IkViVVJfWHFzM1g5Z1hkU201MWhhblgzTmJyS1V0RXdUIiwicGFzc3BvcnQiOnsidXNlciI6eyJ1c2VyX2lkIjoiZmU0ZDgzYjUtNGFmMi00MGZhLWFkYjgtMTJhNmQ1ZTdiYzVhIn19fQ==; mulesoft.sess.sig=G8muQqC4Sdlivayk8QKMYZgoYtk' \
               --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapi28april","version":"1.0.1"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":"testCICD"}' | jq -r '.id')
             echo "API Updated in API Manager with ID ${api_id}"
             echo "${api_id}" > ./api_id.txt
@@ -96,7 +96,7 @@ jobs:
             export $(grep -v '^#' config.txt | xargs); \
             echo "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORGID/environments/$ENVID/apis"
             api_id=$(curl --location "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORGID/environments/$ENVID/apis" \
-              --header 'Authorization: Bearer 0e88033a-be36-4a37-b755-47400e7afb41' \
+              --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}' \
               --form 'Content-Type="application/zip"' \
               --form 'name="file"' \
               --form 'file=@./testingop-v1.zip' | jq -r '.id')
