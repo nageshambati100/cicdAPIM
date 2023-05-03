@@ -47,6 +47,9 @@ jobs:
           echo "Access Token: $ACCESS_TOKEN"
           echo "::set-output name=ACCESS_TOKEN::$ACCESS_TOKEN"
           
+      - name: Read asset details
+        run: |
+          export $(grep -v '^#' asset_details.txt | xargs)
       - name: Publish Asset to Exchange
         env:
           ACCESS_TOKEN: ${{ steps.login.outputs.ACCESS_TOKEN }}"
