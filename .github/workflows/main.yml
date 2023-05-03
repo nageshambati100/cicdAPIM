@@ -46,7 +46,7 @@ jobs:
           echo "Access Token: ${{ steps.login.outputs.ACCESS_TOKEN }}"
         run: |          
            RESPONSE=$(curl -s -w "%{http_code}" -o /dev/null --location 'https://anypoint.mulesoft.com/exchange/api/v1/assets' \
-             --header 'Authorization: Bearer $ACCESS_TOKEN' \
+             --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}' \
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilgha"' \
