@@ -58,7 +58,7 @@ jobs:
            RESPONSE=$(curl -s -w "%{http_code}" -o /dev/null --location 'https://anypoint.mulesoft.com/exchange/api/v1/assets' \
              --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}' \
              --form "organizationId=$ORG_ID" \
-             --form "groupId=$GROUP_ID" \ \
+             --form "groupId=$GROUP_ID" \
              --form "assetId=$ASSET_ID" \
              --form "version=$VERSION" \
              --form "name=$NAME" \
