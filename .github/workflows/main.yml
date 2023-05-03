@@ -70,7 +70,7 @@ jobs:
              --form "asset=@./calculator.raml")
             echo "Asset publish response: $RESPONSE"
             echo "environment variables $ORG_ID"
-            if [ "$RESPONSE" != "201" ] || [ "$RESPONSE" != "200" ]; then
+            if [ "$RESPONSE" != "201" ] && [ "$RESPONSE" != "200" ]; then
              echo "Error: Failed to publish asset to Exchange. Response code: $RESPONSE"
              exit 1
            fi
