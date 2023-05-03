@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - main
+      
+env:
+  ORGID: ${{ secrets.ORG_ID}}
+  ENVID: ${{ secrets.ENV_ID}}
+ 
 jobs:
   publish_and_create_api:
     runs-on: ubuntu-latest
@@ -82,7 +87,7 @@ jobs:
         run: |
           if [ -f api_id.txt ]; then
             echo "API ID file exists. Updating API..."
-            api_id=$(curl --location --request PATCH 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis/18660433' \
+            api_id=$(curl --location --request PATCH 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORGID/environments/$ENVID/apis/18660433' \
               --header 'Authorization: Bearer 4d358cd1-351c-467e-ac51-40074f49909a' \
               --header 'Content-Type: application/json' \
               --header 'Cookie: XSRF-TOKEN=e0WEQ67j-QASPpTuShsNYflSHjsDz15w2lSU; _csrf=oKQwgbfiUHeFPqnIfDz_rsKd; mulesoft.sess=eyJpZCI6IkViVVJfWHFzM1g5Z1hkU201MWhhblgzTmJyS1V0RXdUIiwicGFzc3BvcnQiOnsidXNlciI6eyJ1c2VyX2lkIjoiZmU0ZDgzYjUtNGFmMi00MGZhLWFkYjgtMTJhNmQ1ZTdiYzVhIn19fQ==; mulesoft.sess.sig=G8muQqC4Sdlivayk8QKMYZgoYtk' \
@@ -91,7 +96,7 @@ jobs:
             echo "${api_id}" > ./mynewapiid.txt
           else
             echo "API ID file does not exist. Creating API..."
-            api_id=$(curl --location 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis' \
+            api_id=$(curl --location 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORGID/environments/$ENVID/apis' \
               --header 'Authorization: Bearer 0e88033a-be36-4a37-b755-47400e7afb41' \
               --form 'Content-Type="application/zip"' \
               --form 'name="file"' \
