@@ -19,6 +19,7 @@ jobs:
           sudo apt-get install -y curl jq
 
       - name: Login to Anypoint Platform
+        id: login
         env:
           CLIENT_ID: ${{ secrets.MULESOFT_CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.MULESOFT_CLIENT_SECRET }}
@@ -38,9 +39,10 @@ jobs:
           -d "client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&grant_type=client_credentials")
           ACCESS_TOKEN=$(echo $TOKEN_RESPONSE | jq -r '.access_token')
           echo "Access Token: $ACCESS_TOKEN"
+          echo "::set-output name=ACCESS_TOKEN::$ACCESS_TOKEN"
       - name: Publish Asset to Exchange
         env:
-          ANYPOINT_TOKEN: $ACCESS_TOKEN"
+          ACCESS_TOKEN: ${{ steps.login.outputs.ACCESS_TOKEN }}"
           echo "Access Token: $ACCESS_TOKEN"
         run: |          
            status=$(curl -s -w "%{http_code}" -o /dev/null --location 'https://anypoint.mulesoft.com/exchange/api/v1/assets' \
