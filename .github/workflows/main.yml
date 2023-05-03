@@ -50,6 +50,7 @@ jobs:
       - name: Read asset details
         run: |
           export $(grep -v '^#' asset_details.txt | xargs)
+          echo "environment variables $ORG_ID, $GROUP_ID, $ASSET_ID,$NAME"
       - name: Publish Asset to Exchange
         env:
           ACCESS_TOKEN: ${{ steps.login.outputs.ACCESS_TOKEN }}"
