@@ -43,7 +43,7 @@ jobs:
           ANYPOINT_TOKEN: ${{ secrets.ANYPOINT_TOKEN }}
         run: |          
            status=$(curl -s -w "%{http_code}" -o /dev/null --location 'https://anypoint.mulesoft.com/exchange/api/v1/assets' \
-             --header 'Authorization: Bearer 4d358cd1-351c-467e-ac51-40074f49909a' \
+             --header 'Authorization: Bearer $ACCESS_TOKEN"' \
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilgha"' \
