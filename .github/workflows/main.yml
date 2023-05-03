@@ -45,7 +45,7 @@ jobs:
           ACCESS_TOKEN: ${{ steps.login.outputs.ACCESS_TOKEN }}"
           echo "Access Token: ${{ steps.login.outputs.ACCESS_TOKEN }}"
         run: |          
-           status=$(curl -s -w "%{http_code}" -o /dev/null --location 'https://anypoint.mulesoft.com/exchange/api/v1/assets' \
+           RESPONSE=$(curl -s -w "%{http_code}" -o /dev/null --location 'https://anypoint.mulesoft.com/exchange/api/v1/assets' \
              --header 'Authorization: Bearer $ACCESS_TOKEN' \
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
@@ -55,7 +55,7 @@ jobs:
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
              --form "asset=@./calculator.raml")
-             
+            echo "Asset publish response: $RESPONSE"
             if [ "$RESPONSE" != "201" ] || [ "$RESPONSE" != "200" ]; then
              echo "Error: Failed to publish asset to Exchange. Response code: $RESPONSE"
              exit 1
