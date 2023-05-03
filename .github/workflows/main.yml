@@ -6,8 +6,8 @@ on:
       - main
       
 env:
-  ORGID: ${{ secrets.ORG_ID}}
-  ENVID: ${{ secrets.ENV_ID}}
+  ORGID: ${{ secrets.ANYPOINT_ORG_ID}}
+  ENVID: ${{ secrets.ANYPOINT_ENVID}}
  
 jobs:
   publish_and_create_api:
@@ -93,7 +93,7 @@ jobs:
               --header 'Cookie: XSRF-TOKEN=e0WEQ67j-QASPpTuShsNYflSHjsDz15w2lSU; _csrf=oKQwgbfiUHeFPqnIfDz_rsKd; mulesoft.sess=eyJpZCI6IkViVVJfWHFzM1g5Z1hkU201MWhhblgzTmJyS1V0RXdUIiwicGFzc3BvcnQiOnsidXNlciI6eyJ1c2VyX2lkIjoiZmU0ZDgzYjUtNGFmMi00MGZhLWFkYjgtMTJhNmQ1ZTdiYzVhIn19fQ==; mulesoft.sess.sig=G8muQqC4Sdlivayk8QKMYZgoYtk' \
               --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapi28april","version":"1.0.1"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":"testCICD"}' | jq -r '.id')
             echo "API Updated in API Manager with ID ${api_id}"
-            echo "${api_id}" > ./mynewapiid.txt
+            echo "${api_id}" > ./api_id.txt
           else
             echo "API ID file does not exist. Creating API..."
             api_id=$(curl --location 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORGID/environments/$ENVID/apis' \
@@ -113,7 +113,7 @@ jobs:
         run: |
          git config --local user.email "nageshambati100@gmail.com"
          git config --local user.name "nageshambati100"
-         git add ./mynewapiid.txt
+         git add ./api_id.txt
          git commit -m "Add API ID"
       - name: Read API ID
         run: |
