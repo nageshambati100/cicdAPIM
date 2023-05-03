@@ -40,7 +40,8 @@ jobs:
           echo "Access Token: $ACCESS_TOKEN"
       - name: Publish Asset to Exchange
         env:
-          ANYPOINT_TOKEN: ${{ secrets.ANYPOINT_TOKEN }}
+          ANYPOINT_TOKEN: $ACCESS_TOKEN"
+          echo "Access Token: $ACCESS_TOKEN"
         run: |          
            status=$(curl -s -w "%{http_code}" -o /dev/null --location 'https://anypoint.mulesoft.com/exchange/api/v1/assets' \
              --header 'Authorization: Bearer $ACCESS_TOKEN"' \
