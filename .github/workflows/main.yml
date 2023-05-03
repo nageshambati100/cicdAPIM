@@ -76,50 +76,29 @@ jobs:
            fi
            echo "::set-output name=status::$status"
            echo "Asset published successfully with status code ${{ steps.publish_asset.outputs.status }}"
-
-           
         id: publish_asset
         
       - name: Check if API ID exists in API Manager
-        if: success()
-        id: apiIdExistsornot
         run: |
-          api_id=$(cat ./mynewapiid.txt)
-          
-          if [ -z "${api_id}" ]; then
-            echo "::set-output name=apialreadyCreated::No"
-            echo "Create API in API Manager output: ${{ steps.step1.outputs.my-output }}"
-          else
-            echo "API ID exists in API Manager"
-            echo "::set-output name=apialreadyCreated::Yes"
-            echo "apialreadyCreated value in already API ID exists in API Manager section--> ${{ steps.apiIdExistsornot.outputs.apialreadyCreated}}"
+          if [ -f api_id.txt ]; then
+            echo "API ID file exists. Updating API..."
             api_id=$(curl --location --request PATCH 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis/18660433' \
-            --header 'Authorization: Bearer 4d358cd1-351c-467e-ac51-40074f49909a' \
-            --header 'Content-Type: application/json' \
-            --header 'Cookie: XSRF-TOKEN=e0WEQ67j-QASPpTuShsNYflSHjsDz15w2lSU; _csrf=oKQwgbfiUHeFPqnIfDz_rsKd; mulesoft.sess=eyJpZCI6IkViVVJfWHFzM1g5Z1hkU201MWhhblgzTmJyS1V0RXdUIiwicGFzc3BvcnQiOnsidXNlciI6eyJ1c2VyX2lkIjoiZmU0ZDgzYjUtNGFmMi00MGZhLWFkYjgtMTJhNmQ1ZTdiYzVhIn19fQ==; mulesoft.sess.sig=G8muQqC4Sdlivayk8QKMYZgoYtk' \
-            --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapi28april","version":"1.0.1"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":"testCICD"}' | jq -r '.id')
-           echo "API Updated in API Manager with ID ${api_id}"
-           echo "${api_id}" > ./mynewapiid.txt
-          fi
-      - name: Create API in API Manager
-         echo "apialreadyCreated-1--> ${apialreadyCreated}"
-         echo "apialreadyCreated-2--> ${{ steps.apiIdExistsornot.outputs.apialreadyCreated}}"
-        if: ${{ steps.apiIdExistsornot.outputs.apialreadyCreated != 'Yes'}}
-        env:
-          ANYPOINT_TOKEN: ${{ secrets.ANYPOINT_TOKEN }}
-          ANYPOINT_ORG_ID: ${{ secrets.ANYPOINT_ORG_ID }}
-          API_DEFINITION_FILE: ./apidefinition.raml
-          API_ID_FILE: api_id.txt
-
-        run: |
-           api_id=$(curl --location 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis' \
-            --header 'Authorization: Bearer 4d358cd1-351c-467e-ac51-40074f49909a' \
-            --header 'Content-Type: application/json' \
-            --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapi28april","version":"1.0.0"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":null}' | jq -r '.id')
-           echo "API created in API Manager with ID ${api_id}"
-           echo "${api_id}" > ./mynewapiid.txt
-           
-      - name: Commit API ID to repo
+              --header 'Authorization: Bearer 4d358cd1-351c-467e-ac51-40074f49909a' \
+              --header 'Content-Type: application/json' \
+              --header 'Cookie: XSRF-TOKEN=e0WEQ67j-QASPpTuShsNYflSHjsDz15w2lSU; _csrf=oKQwgbfiUHeFPqnIfDz_rsKd; mulesoft.sess=eyJpZCI6IkViVVJfWHFzM1g5Z1hkU201MWhhblgzTmJyS1V0RXdUIiwicGFzc3BvcnQiOnsidXNlciI6eyJ1c2VyX2lkIjoiZmU0ZDgzYjUtNGFmMi00MGZhLWFkYjgtMTJhNmQ1ZTdiYzVhIn19fQ==; mulesoft.sess.sig=G8muQqC4Sdlivayk8QKMYZgoYtk' \
+              --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapi28april","version":"1.0.1"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":"testCICD"}' | jq -r '.id')
+            echo "API Updated in API Manager with ID ${api_id}"
+            echo "${api_id}" > ./mynewapiid.txt
+          else
+            echo "API ID file does not exist. Creating API..."
+            api_id=$(curl --location 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis' \
+              --header 'Authorization: Bearer 4d358cd1-351c-467e-ac51-40074f49909a' \
+              --header 'Content-Type: application/json' \
+              --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapi28april","version":"1.0.0"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":null}' | jq -r '.id')
+            echo "API created in API Manager with ID ${api_id}"
+            echo "${api_id}" > ./api_id.txt
+          fi      
+      - name: Commit API ID file to repo
         run: |
          git config --local user.email "nageshambati100@gmail.com"
          git config --local user.name "nageshambati100"
