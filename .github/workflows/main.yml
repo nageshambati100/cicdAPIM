@@ -20,8 +20,8 @@ jobs:
 
       - name: Login to Anypoint Platform
         env:
-          CLIENT_ID: ${{ secrets.client_id }}
-          CLIENT_SECRET: ${{ secrets.client_secret }}
+          CLIENT_ID: ${{ secrets.MULESOFT_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.MULESOFT_CLIENT_SECRET }}
         run: |
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
           https://anypoint.mulesoft.com/accounts/api/v2/oauth2/t oken \
