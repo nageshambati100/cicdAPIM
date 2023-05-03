@@ -96,7 +96,7 @@ jobs:
               --form 'Content-Type="application/zip"' \
               --form 'name="file"' \
               --form 'filename=@./proxyhttpapi-v1.zip' | jq -r '.id')
-          if [ -z "$api_id" ]; then
+          if [ -z ${api_id} ]; then
              echo "Error: Failed to create API in API Manager. "
              exit 1
            fi
