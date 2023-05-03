@@ -1,0 +1,7 @@
+ORG_ID=<value>
+GROUP_ID=<value>
+ASSET_ID=<value>
+VERSION=<value>
+NAME=<value>
+CLASSIFIER=<value>
+API_VERSION=<value>
