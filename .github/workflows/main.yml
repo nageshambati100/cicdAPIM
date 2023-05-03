@@ -95,7 +95,7 @@ jobs:
               --header 'Authorization: Bearer 0e88033a-be36-4a37-b755-47400e7afb41' \
               --form 'Content-Type="application/zip"' \
               --form 'name="file"' \
-              --form 'filename=@./test.raml' | jq -r '.id')
+              --form 'filename=@./test-api.zip' | jq -r '.id')
           echo "API created in API Manager with ID ${api_id}"
             echo "${api_id}" > ./api_id.txt
           fi      
