@@ -47,7 +47,7 @@ jobs:
              --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
              --form 'assetId="mycicddemoapiaprilgha"' \
-             --form 'version="1.0.49"' \
+             --form 'version="1.0.50"' \
              --form 'name="my cicd demo app new gha"' \
              --form 'classifier="raml"' \
              --form 'apiVersion="v1"' \
@@ -102,24 +102,6 @@ jobs:
             --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapi28april","version":"1.0.0"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":null}' | jq -r '.id')
            echo "API created in API Manager with ID ${api_id}"
            echo "${api_id}" > ./mynewapiid.txt
-
-      - name: Apply policies to API
-        if: success() && (steps.apiIdExistsornot.outputs.apialreadyCreated != 'Yes')
-        run: |
-          policy_name="My Rate Limit Policy"
-          policy_definition_path="./policy.yaml"
-          api_id=$(curl --location --request POST "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis/18660433/policies" \
-            --header "Content-Type: application/json" \
-            --header 'Authorization: Bearer 60329bfc-974c-47d0-8c9e-4c6622229c93' \
-            --data '{
-              "configurationData":{
-                "clusterizable":true,
-                "exposeHeaders":true,
-                  "rateLimits": [{"timePeriodInMilliseconds": 86400000, "maximumRequests": 1000}] 
-                }")
-
-          echo "Policy has been applied for APIID ${api_id}"
-          echo "Policy applied to API"
            
       - name: Commit API ID to repo
         run: |
