@@ -97,7 +97,7 @@ jobs:
               --form 'name="file"' \
               --form 'filename=@./proxyhttpapi-v1.zip' | jq -r '.id')
               echo "API created in API Manager with ID $api_id"
-              if [ -z "$api_id" ]; then
+              if [ "$api_id" = null ]; then
                 echo "Error: Failed to create API in API Manager. "
                 exit 1
               fi
