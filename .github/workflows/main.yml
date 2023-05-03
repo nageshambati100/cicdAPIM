@@ -23,21 +23,14 @@ jobs:
           CLIENT_ID: ${{ secrets.client_id }}
           CLIENT_SECRET: ${{ secrets.client_secret }}
         run: |
-          response=$(curl -s -X POST "https://anypoint.mulesoft.com/accounts/login" \
-            -H "Content-Type: application/json" \
-            -d '{"client_id":"'${CLIENT_ID}'","client_secret":"'${CLIENT_SECRET}'","grant_type":"'client_credentials'"}')
-          token=$(echo $response | jq -r '.access_token')
-          echo "Anypoint Platform login successful"
-        id: login
-        continue-on-error: true
-          
-      - name: Check if login was successful
-        run: |
-          if [ -z "${{ steps.login.outputs }}" ]; then
-            echo "Error: Login failed"
-            exit 1
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+          https://anypoint.mulesoft.com/accounts/api/v2/oauth2/t oken \
+          -H 'Content-Type: application/x-www-form-urlencoded' \
+          -d 'client_id='${{ secrets.MULESOFT_CLIENT_ID }}'&client_secret='${{ secrets.MULESOFT_CLIENT_SECRET }}'&grant_type=client_credentials')
+          if [ "$RESPONSE" != "200" ]; then
+             echo "Error: Failed to obtain Anypoint Platform access token. Response code: $RESPONSE"
+             exit 1
           fi
-
       - name: Publish Asset to Exchange
         env:
           ANYPOINT_TOKEN: ${{ secrets.ANYPOINT_TOKEN }}
