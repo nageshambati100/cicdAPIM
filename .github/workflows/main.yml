@@ -59,7 +59,7 @@ jobs:
            echo "Asset_details.txt file available"
            export $(grep -v '^#' asset_details.txt | xargs); \
            RESPONSE=$(curl -s -w "%{http_code}" -o /dev/null --location 'https://anypoint.mulesoft.com/exchange/api/v1/assets' \
-             --header 'Authorization: Bearer ee9129db-d2bf-4cb5-a7b1-51ebd2f720a9' \
+             --header 'Authorization: Bearer 0e88033a-be36-4a37-b755-47400e7afb41' \
              --form "organizationId=$ORG_ID" \
              --form "groupId=$GROUP_ID" \
              --form "assetId=$ASSET_ID" \
@@ -92,10 +92,11 @@ jobs:
           else
             echo "API ID file does not exist. Creating API..."
             api_id=$(curl --location 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis' \
-              --header 'Authorization: Bearer 4d358cd1-351c-467e-ac51-40074f49909a' \
-              --header 'Content-Type: application/json' \
-              --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapi28april","version":"1.0.0"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":null}' | jq -r '.id')
-            echo "API created in API Manager with ID ${api_id}"
+              --header 'Authorization: Bearer 0e88033a-be36-4a37-b755-47400e7afb41' \
+              --form 'Content-Type="application/zip"' \
+              --form 'name="file"' \
+              --form 'filename=@./test.raml' | jq -r '.id')
+          echo "API created in API Manager with ID ${api_id}"
             echo "${api_id}" > ./api_id.txt
           fi      
       - name: Commit API ID file to repo
