@@ -46,6 +46,7 @@ jobs:
           echo "::set-output name=access_token::$ACCESS_TOKEN"
           echo "Access Token: $ACCESS_TOKEN"
           echo "::set-output name=ACCESS_TOKEN::$ACCESS_TOKEN"
+          
       - name: Publish Asset to Exchange
         env:
           ACCESS_TOKEN: ${{ steps.login.outputs.ACCESS_TOKEN }}"
