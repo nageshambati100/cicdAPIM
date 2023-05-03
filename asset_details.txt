@@ -1,0 +1,7 @@
+ORG_ID=8ccbc578-b790-45f9-9859-bca06c81adcd
+GROUP_ID=8ccbc578-b790-45f9-9859-bca06c81adcd
+ASSET_ID=mycicddemoapipostman
+VERSION=1.0.2
+NAME=my cicd app postman
+CLASSIFIER=raml
+API_VERSION=v1
