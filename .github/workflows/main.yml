@@ -54,13 +54,13 @@ jobs:
         run: |          
            RESPONSE=$(curl -s -w "%{http_code}" -o /dev/null --location 'https://anypoint.mulesoft.com/exchange/api/v1/assets' \
              --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}' \
-             --form 'organizationId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
-             --form 'groupId="8ccbc578-b790-45f9-9859-bca06c81adcd"' \
-             --form 'assetId="mycicddemoapiaprilgha"' \
-             --form 'version="1.0.51"' \
-             --form 'name="my cicd demo app new gha"' \
-             --form 'classifier="raml"' \
-             --form 'apiVersion="v1"' \
+             --form "organizationId=$ORG_ID" \
+             --form "groupId=$GROUP_ID" \ \
+             --form "assetId=$ASSET_ID" \
+             --form "version=$VERSION" \
+             --form "name=$NAME" \
+             --form "classifier=$CLASSIFIER" \
+             --form "apiVersion=$API_VERSION" \
              --form "asset=@./calculator.raml")
             echo "Asset publish response: $RESPONSE"
             if [ "$RESPONSE" != "201" ] || [ "$RESPONSE" != "200" ]; then
