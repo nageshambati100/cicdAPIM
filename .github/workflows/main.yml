@@ -38,6 +38,12 @@ jobs:
           -H 'Content-Type: application/x-www-form-urlencoded' \
           -d "client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&grant_type=client_credentials")
           ACCESS_TOKEN=$(echo $TOKEN_RESPONSE | jq -r '.access_token')
+          if [[ -z "$ACCESS_TOKEN" ]]; then
+            echo "Error: Failed to login to Anypoint Platform"
+            exit 1
+          fi
+          echo "Logged in to Anypoint Platform successfully"
+          echo "::set-output name=access_token::$ACCESS_TOKEN"
           echo "Access Token: $ACCESS_TOKEN"
           echo "::set-output name=ACCESS_TOKEN::$ACCESS_TOKEN"
       - name: Publish Asset to Exchange
@@ -65,12 +71,6 @@ jobs:
            
         id: publish_asset
         
-      - name: Check if asset was published successfully
-          echo "Asset publishing status code ${{ steps.publish_asset.outputs.status }}"
-        if: success() && (steps.publish_asset.outputs.status != '201' && steps.publish_asset.outputs.status != '200')     
-        run: |
-          echo "Error: Failed to publish asset"
-          exit 1
       - name: Check if API ID exists in API Manager
         if: success()
         id: apiIdExistsornot
