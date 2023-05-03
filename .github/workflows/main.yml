@@ -97,7 +97,7 @@ jobs:
           else
             echo "API ID file does not exist. Creating API..."
             echo "ORGID: $ORGID and ENVID: $ENVID"
-            api_id=$(curl --location 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORGID/environments/$ENVID/apis' \
+            api_id=$(curl --location 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/8ccbc578-b790-45f9-9859-bca06c81adcd/environments/7001f5f5-7165-4e3c-833b-f63282df9523/apis' \
               --header 'Authorization: Bearer 0e88033a-be36-4a37-b755-47400e7afb41' \
               --form 'Content-Type="application/zip"' \
               --form 'name="file"' \
