@@ -86,10 +86,8 @@ jobs:
             api_id=$(cat api_id.txt)
             api_id=$(curl --location --request PATCH 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORGID/environments/$ENVID/apis/$api_id' \
               --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}' \
-              --header 'Content-Type: application/json' \
-              --data '{"spec":{"groupId":"8ccbc578-b790-45f9-9859-bca06c81adcd","assetId":"mycicddemoapi28april","version":"1.0.1"},"endpoint":{"uri":null,"proxyUri":null,"isCloudHub":true,"muleVersion4OrAbove":true,"type":null,"deploymentType":"CH"},"instanceLabel":"testCICD"}' | jq -r '.id')
+              --data "assetVersion=$VERSION" \
             echo "API Updated in API Manager with ID ${api_id}"
-            echo "${api_id}" > ./api_id.txt
           else
             echo "API ID file does not exist. Creating API..."
             echo "ORGID: $ORGID and ENVID: $ENVID"
@@ -110,10 +108,14 @@ jobs:
           fi      
       - name: Commit API ID file to repo
         run: |
+         if [ -f api_id.txt ]; then
+         echo "API ID file alreadt exists."
+         else
          git config --local user.email "nageshambati100@gmail.com"
          git config --local user.name "nageshambati100"
          git add ./api_id.txt
          git commit -m "Add API ID"
+         
       - name: Read API ID
         run: |
           new_api_id=$(cat ./mynewapiid.txt)
