@@ -91,7 +91,9 @@ jobs:
           response=$(curl -s -o /dev/null -w "%{http_code}" -X GET "$url" --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}'  | jq -r '.id')
           echo "Fetch API from API Manager response $$response"
           if [ "$response" = "200" ]; then
-            api_id=$(curl -s "$url" | jq -r '.id')
+            echo "$url"
+            echo "$response"
+            #api_id=$(curl -s "$url" | jq -r '.id')
             echo "URL: https://anypoint.mulesoft.com/apimanager/xapi/v1/organizations/$ORGID/environments/$ENVID/apis?limit=1&offset=0&pinnedFirst=true&query=$NAME&sort=name&ascending=true"
             echo "API available in API Manager with ID ${api_id}"
             echo "API ID file exists. Updating API..."
@@ -101,7 +103,7 @@ jobs:
               --data "assetVersion=$VERSION")
             echo "API Updated in API Manager with ID ${api_id}"
           else
-            echo "API ID file does not exist. Creating API..."
+            echo "API does not exist. Creating API..."
             echo "ORGID: $ORG_ID and ENVID: $ENVID"
             export $(grep -v '^#' config.txt | xargs); \
             echo "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORGID/environments/$ENVID/apis"
