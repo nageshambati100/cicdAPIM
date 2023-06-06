@@ -121,7 +121,8 @@ jobs:
                 fi
                 echo "API created in API Manager with ID ${api_id}"
                 echo "${api_id}" > ./api_id.txt
-            fi 
+            fi
+          fi  
             
       - name: Commit API ID file to repo
         run: |
