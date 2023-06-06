@@ -88,7 +88,7 @@ jobs:
           echo "ORGID: $ORG_ID and ENVID: $ENVID and APIManager API Name: $NAME"
           echo "URL: https://anypoint.mulesoft.com/apimanager/xapi/v1/organizations/$ORGID/environments/$ENVID/apis?limit=1&offset=0&pinnedFirst=true&query=$NAME&sort=name&ascending=true"
           url="https://anypoint.mulesoft.com/apimanager/xapi/v1/organizations/$ORGID/environments/${ENVID}/apis?limit=1&offset=0&pinnedFirst=true&query=$=NAME&sort=name&ascending=true"
-          response=$(curl -s -o /dev/null -w "%{http_code}" -X GET "$url" --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}'  | jq -r '.id')
+          response=$(curl -s -o /dev/null -w "%{http_code}" -X GET "$url" --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}')
           echo "Fetch API from API Manager response $$response"
           if [ "$response" = "200" ]; then
             echo "$url"
