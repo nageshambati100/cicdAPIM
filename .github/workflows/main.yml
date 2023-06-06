@@ -85,7 +85,7 @@ jobs:
           ENVID: ${{ secrets.ANYPOINT_ENVID }}
         run: |
           export $(grep -v '^#' asset_details.txt | xargs); \
-          echo "ORGID: $ORGID and ENVID: $ENVID and APIManager API Name: $NAME"
+          echo "ORGID: $ORG_ID and ENVID: $ENVID and APIManager API Name: $NAME"
           api_id=$(curl --location --request GET 'https://anypoint.mulesoft.com/apimanager/xapi/v1/organizations/$ORGID/environments/$ENVID/apis?limit=1&offset=0&pinnedFirst=true&query=$NAME&sort=name&ascending=true' \
               --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}'  | jq -r '.id')
           echo "API available in API Manager with ID ${api_id}"
@@ -97,7 +97,7 @@ jobs:
             echo "API Updated in API Manager with ID ${api_id}"
           else
             echo "API ID file does not exist. Creating API..."
-            echo "ORGID: $ORGID and ENVID: $ENVID"
+            echo "ORGID: $ORG_ID and ENVID: $ENVID"
             export $(grep -v '^#' config.txt | xargs); \
             echo "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORGID/environments/$ENVID/apis"
             api_id=$(curl --location "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORGID/environments/$ENVID/apis" \
