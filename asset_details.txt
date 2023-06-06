@@ -1,5 +1,5 @@
-ORG_ID=c38c44eb-7898-4ebd-96f4-6be1211cdd81
-GROUP_ID=c38c44eb-7898-4ebd-96f4-6be1211cdd81
+ORG_ID=8ccbc578-b790-45f9-9859-bca06c81adcd
+GROUP_ID=8ccbc578-b790-45f9-9859-bca06c81adcd
 ASSET_ID=mycicddemoapi
 VERSION=1.0.1
 NAME=my cicd app postman
