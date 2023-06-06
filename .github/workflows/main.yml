@@ -85,9 +85,9 @@ jobs:
           export $(grep -v '^#' asset_details.txt | xargs); \
           api_id=$(curl --location --request GET 'https://anypoint.mulesoft.com/apimanager/xapi/v1/organizations/$ORGID/environments/$ENVID/apis?limit=1&offset=0&pinnedFirst=true&query=$NAME&sort=name&ascending=true' \
               --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}'  | jq -r '.id')
+          echo "API available in API Manager with ID ${api_id}"
           if [[ -n "$api_id" ]]; then
             echo "API ID file exists. Updating API..."
-            api_id=$(cat api_id.txt)
             api_id=$(curl --location --request PATCH "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORGID/environments/$ENVID/apis/$api_id" \
               --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}' \
               --data "assetVersion=$VERSION")
