@@ -93,7 +93,7 @@ jobs:
           if [ "$response" = "200" ]; then
             echo "$url"
             echo "$response"
-            #api_id=$(curl -s "$url" | jq -r '.id')
+            api_id=$(curl -s "$url" | jq -r '.id')
             echo "URL: https://anypoint.mulesoft.com/apimanager/xapi/v1/organizations/$ORGID/environments/$ENVID/apis?limit=1&offset=0&pinnedFirst=true&query=$NAME&sort=name&ascending=true"
             echo "API available in API Manager with ID ${api_id}"
             echo "API ID file exists. Updating API..."
