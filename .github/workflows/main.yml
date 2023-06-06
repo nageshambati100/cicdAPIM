@@ -81,6 +81,8 @@ jobs:
         id: publish_asset
         
       - name: Check if API ID exists in API Manager
+        env:
+          ENVID: ${{ secrets.ANYPOINT_ENVID }}
         run: |
           export $(grep -v '^#' asset_details.txt | xargs); \
           api_id=$(curl --location --request GET 'https://anypoint.mulesoft.com/apimanager/xapi/v1/organizations/$ORGID/environments/$ENVID/apis?limit=1&offset=0&pinnedFirst=true&query=$NAME&sort=name&ascending=true' \
