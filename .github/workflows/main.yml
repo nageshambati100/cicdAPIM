@@ -81,7 +81,9 @@ jobs:
         
       - name: Check if API ID exists in API Manager
         run: |
-          if [ -f api_id.txt ]; then
+          api_id=$(curl --location --request GET 'https://anypoint.mulesoft.com/apimanager/xapi/v1/organizations/c38c44eb-7898-4ebd-96f4-6be1211cdd81/environments/2ae92715-3915-4c9d-b516-ce5140f08ebc/apis?limit=1&offset=0&pinnedFirst=true&query=American Flights API Ambi&sort=name&ascending=true' \
+              --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}' | jq -r '.id')
+          if [[ -n "$api_id" ]]; then
             echo "API ID file exists. Updating API..."
             api_id=$(cat api_id.txt)
             api_id=$(curl --location --request PATCH 'https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORGID/environments/$ENVID/apis/$api_id' \
