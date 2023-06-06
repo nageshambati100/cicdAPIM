@@ -89,37 +89,39 @@ jobs:
           echo "URL: https://anypoint.mulesoft.com/apimanager/xapi/v1/organizations/$ORG_ID/environments/$ENVID/apis?limit=1&offset=0&pinnedFirst=true&query=$NAME&sort=name&ascending=true"
           url="https://anypoint.mulesoft.com/apimanager/xapi/v1/organizations/$ORG_ID/environments/${ENVID}/apis?limit=1&offset=0&pinnedFirst=true&query=$=NAME&sort=name&ascending=true"
           response=$(curl -s -o /dev/null -w "%{http_code}" -X GET "$url" --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}')
-          echo "Fetch API from API Manager response $$response"
+          echo "Fetch API from API Manager response $response" 
           if [ "$response" = "200" ]; then
-            echo "$url"
-            echo "$response"
-            api_id=$(curl -s "$url" | jq -r '.id')
-            echo "URL: https://anypoint.mulesoft.com/apimanager/xapi/v1/organizations/$ORG_ID/environments/$ENVID/apis?limit=1&offset=0&pinnedFirst=true&query=$NAME&sort=name&ascending=true"
-            echo "API available in API Manager with ID ${api_id}"
-            echo "API ID file exists. Updating API..."
-            echo "Response of get api from API Manager is $api_id"
-            api_id=$(curl --location --request PATCH "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORG_ID/environments/$ENVID/apis/$api_id" \
-              --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}' \
-              --data "assetVersion=$VERSION")
-            echo "API Updated in API Manager with ID ${api_id}"
-          else
-            echo "API does not exist. Creating API..."
-            echo "ORGID: $ORG_ID and ENVID: $ENVID"
-            export $(grep -v '^#' config.txt | xargs); \
-            echo "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORGID/environments/$ENVID/apis"
-            api_id=$(curl --location "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORGID/environments/$ENVID/apis" \
-              --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}' \
-              --form 'Content-Type="application/zip"' \
-              --form 'name="file"' \
-              --form 'file=@./testingop-v1.zip' | jq -r '.id')
-              echo "API created in API Manager with ID $api_id"
-              if [ "$api_id" = null ]; then
-                echo "Error: Failed to create API in API Manager. "
-                exit 1
-              fi
-              echo "API created in API Manager with ID ${api_id}"
-              echo "${api_id}" > ./api_id.txt
-          fi      
+            api_count=$(curl -s "$url" | jq -r '.total')
+            if [ "$api_count" != "0" ]; then
+              echo "$url"
+              echo "$response"
+              api_id=$(curl -s "$url" | jq -r '.id')
+              echo "URL: https://anypoint.mulesoft.com/apimanager/xapi/v1/organizations/$ORG_ID/environments/$ENVID/apis?limit=1&offset=0&pinnedFirst=true&query=$NAME&sort=name&ascending=true"
+              echo "API available in API Manager with ID ${api_id}"
+              echo "API ID exists. Updating API..."
+              echo "Response of get api from API Manager is $api_id"
+              api_id=$(curl --location --request PATCH "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORG_ID/environments/$ENVID/apis/$api_id" \
+                --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}' \
+                --data "assetVersion=$VERSION")
+              echo "API Updated in API Manager with ID ${api_id}"
+            else
+              echo "API does not exist. Creating API..."
+              echo "ORGID: $ORG_ID and ENVID: $ENVID"
+              export $(grep -v '^#' config.txt | xargs); \
+              echo "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORGID/environments/$ENVID/apis"
+              api_id=$(curl --location "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORGID/environments/$ENVID/apis" \
+                --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}' \
+                --form 'Content-Type="application/zip"' \
+                --form 'name="file"' \
+                --form 'file=@./testingop-v1.zip' | jq -r '.id')
+                echo "API created in API Manager with ID $api_id"
+                if [ "$api_id" = null ]; then
+                  echo "Error: Failed to create API in API Manager. "
+                  exit 1
+                fi
+                echo "API created in API Manager with ID ${api_id}"
+                echo "${api_id}" > ./api_id.txt
+            fi      
       - name: Commit API ID file to repo
         run: |
          if [ -f api_id.txt ]; then
