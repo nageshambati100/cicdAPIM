@@ -115,7 +115,7 @@ jobs:
               UPDATED_EXPORT_JSON=$(echo "$JSON" | jq --arg NAME "$NAME" --arg VERSION "$VERSION" --arg ASSET_ID "$ASSET_ID" '.api["$self"].instanceLabel = $NAME | .api["$self"].assetVersion = $VERSION | .api["$self"].assetId = $ASSET_ID ')
               echo "$UPDATED_EXPORT_JSON" > ./UPDATED_EXPORT_JSON.zip
               echo "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORGID/environments/${ENVID}/apis"
-              api_id=$(curl --location "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORGID/environments/${ENVID}/apis" \
+              api_id=$(curl --location "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORG_ID/environments/${ENVID}/apis" \
                 --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}' \
                 --form 'Content-Type="application/zip"' \
                 --form 'name="file"' \
