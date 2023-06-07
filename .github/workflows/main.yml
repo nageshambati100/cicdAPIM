@@ -113,14 +113,14 @@ jobs:
               echo "ORGID: $ORG_ID and ENVID: ${ENVID} asset_id: ASSET_ID assetVersion: $VERSION instanceLabel: $NAME "
               JSON=$(cat ./export.json)
               UPDATED_EXPORT_JSON=$(echo "$JSON" | jq --arg NAME "$NAME" --arg VERSION "$VERSION" --arg ASSET_ID "$ASSET_ID" '.api["$self"].instanceLabel = $NAME | .api["$self"].assetVersion = $VERSION | .api["$self"].assetId = $ASSET_ID ')
-              echo "$UPDATED_EXPORT_JSON"
-              echo "$UPDATED_EXPORT_JSON" > ./export.zip
+              echo "$UPDATED_EXPORT_JSON" > export.json
+              zip UPDATED_EXPORT_JSON.zip export.json
               echo "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORG_ID/environments/${ENVID}/apis"
               response=$(curl --location "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORG_ID/environments/${ENVID}/apis" \
                 --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}' \
                 --form 'Content-Type="application/zip"' \
                 --form 'name="file"' \
-                --form 'file=@./export.zip')
+                --form 'file=@./UPDATED_EXPORT_JSON.zip')
                 echo "API created in API Manager with ID $api_id"
                 echo "Response from create API: $response"
                 api_id=$(echo "$response" | jq -r '.id')
