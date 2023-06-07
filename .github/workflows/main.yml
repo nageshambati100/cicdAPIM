@@ -92,6 +92,7 @@ jobs:
           echo "Fetch API from API Manager response $response" 
           if [ "$response" = "200" ]; then
             api_count=$(curl -s "$url" | jq -r '.total')
+            echo "API Count is $api_count"
             if [ "$api_count" != "0" ]; then
               echo "$url"
               echo "$response"
