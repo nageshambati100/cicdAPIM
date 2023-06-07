@@ -95,10 +95,10 @@ jobs:
             api_count=$(curl -s "$url" --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}' | jq -r '.total')
             echo "Response from API Manager: $url"
             echo "API Count is $api_count"
-            if [ "$api_count" != "0" ]; then
+            if [ "$api_count" != "0" ] && [ "$api_count" != "null" ]; then
               echo "$url"
               echo "$response"
-              api_id=$(curl -s "$url" | jq -r '.instances[].id')
+              api_id=$(curl -s "$url" --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}' | jq -r '.instances[].id')
               echo "URL: https://anypoint.mulesoft.com/apimanager/xapi/v1/organizations/$ORG_ID/environments/$ENVID/apis?limit=1&offset=0&pinnedFirst=true&query=$NAME&sort=name&ascending=true"
               echo "API available in API Manager with ID ${api_id}"
               echo "API ID exists. Updating API..."
