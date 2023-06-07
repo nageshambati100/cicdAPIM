@@ -119,7 +119,7 @@ jobs:
                 --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}' \
                 --form 'Content-Type="application/zip"' \
                 --form 'name="file"' \
-                --form 'file=@<(cat ./UPDATED_EXPORT_JSON.zip)' | jq -r '.id')
+                --data-binary "@./UPDATED_EXPORT_JSON.zip" | jq -r '.id')
                 echo "API created in API Manager with ID $api_id"
                 if [ "$api_id" = null ]; then
                   echo "Error: Failed to create API in API Manager. "
