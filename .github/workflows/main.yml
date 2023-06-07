@@ -92,7 +92,7 @@ jobs:
           echo "Fetch API from API Manager response $response" 
           if [ "$response" = "200" ]; then
             echo "url before gettting total count: $url"
-            api_count=$(curl -s "$url" --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }} | jq -r '.total')
+            api_count=$(curl -s "$url" --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}' | jq -r '.total')
             echo "Response from API Manager: $(curl -s "$url")"
             echo "API Count is $api_count"
             if [ "$api_count" != "0" ]; then
