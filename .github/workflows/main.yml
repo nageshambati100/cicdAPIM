@@ -121,7 +121,7 @@ jobs:
                 --form 'name="file"' \
                 --form 'file=@./UPDATED_EXPORT_JSON.zip')
                 echo "API created in API Manager with ID $api_id"
-                echo "Response from create API: $$response"
+                echo "Response from create API: $response"
                 api_id=$(echo "$response" | jq -r '.id')
                 if [ "$api_id" = null ]; then
                   echo "Error: Failed to create API in API Manager. "
