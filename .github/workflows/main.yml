@@ -106,7 +106,7 @@ jobs:
               api_id=$(curl --location --request PATCH "https://anypoint.mulesoft.com/apimanager/api/v1/organizations/$ORG_ID/environments/$ENVID/apis/$api_id" \
                 --header 'Authorization: Bearer ${{ steps.login.outputs.ACCESS_TOKEN }}' \
                 --header 'Content-Type: application/json' \
-                --data '{"assetVersion": $VERSION}')
+                --data "{\"assetVersion\": \"$VERSION\"}")
               echo "API Updated in API Manager with ID ${api_id}"
             else
               echo "API does not exist. Creating API..."
