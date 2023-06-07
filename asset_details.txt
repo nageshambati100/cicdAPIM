@@ -2,6 +2,6 @@ ORG_ID=8ccbc578-b790-45f9-9859-bca06c81adcd
 GROUP_ID=8ccbc578-b790-45f9-9859-bca06c81adcd
 ASSET_ID=my-cicd-demo-api
 VERSION=1.0.5
-NAME=my-cicd-demo-api
+NAME=testing
 CLASSIFIER=raml
 API_VERSION=v1
